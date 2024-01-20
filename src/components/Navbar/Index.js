@@ -3,11 +3,18 @@ import { AppBar, Badge, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typogr
 import React, { useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useDispatch, useSelector } from 'react-redux';
+import { activeMobile } from '../../redux/reducers/rootReducer';
 
-const Navbar = ({setActiveMobile, activeMobile}) => {
+const Navbar = () => {
+
+  const activeMb = useSelector((state) => state.systemeGPA.activeMobile);
+  const dispatch = useDispatch();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const xs = useMediaQuery('(max-width:600px)');
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -23,7 +30,7 @@ const Navbar = ({setActiveMobile, activeMobile}) => {
         <Toolbar disableGutters={xs ? true : false}>
           <IconButton
            sx={{ display: { xs: 'flex', sm: 'flex', md: 'none' }}}
-           onClick={()=>setActiveMobile(!activeMobile)}
+           onClick={()=>dispatch(activeMobile(!activeMb))}
           >
             <MenuIcon sx={{ fontSize: '25px' }} />
           </IconButton>

@@ -1,13 +1,26 @@
-import { Avatar, Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, Typography } from '@mui/material'
+import { Avatar, Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, Typography, styled } from '@mui/material'
 import user from '../../assets/images/user.png'
 import { Assignment, Dashboard, NoteAdd, PlaylistAdd, Send, Source } from '@mui/icons-material'
+import { Link, NavLink } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-const Sidebar = ({ active, activeMobile }) => {
+const Sidebar = () => {
+
+  const active = useSelector((state) => state.systemeGPA.active);
+  const activeMobile = useSelector((state) => state.systemeGPA.activeMobile);
+
+  const CustomStyled = styled(Link)({
+    textDecoration: 'none',
+    color: '#555555',
+    display: 'block',
+    width: '100%',
+    
+  })
   return (
     <Paper
       sx={{
         position: "fixed",
-        left: {xs: activeMobile ? '-250px' : 0, sm:  activeMobile ? '-250px' : 0, md:  active ? '-250px' : 0},
+        left: { xs: activeMobile ? '-250px' : 0, sm: activeMobile ? '-250px' : 0, md: active ? '-250px' : 0 },
         width: '250px',
         transition: 'width 0.3s ease-in-out, left 0.3s ease-in-out',
         overflowY: 'auto',
@@ -16,7 +29,7 @@ const Sidebar = ({ active, activeMobile }) => {
         zIndex: 999
       }}
     >
-      <Stack direction='column' spacing={0}  sx={{ position: 'sticky', top: 0, zIndex: 999 }}>
+      <Stack direction='column' spacing={0} sx={{ position: 'sticky', top: 0, zIndex: 999 }}>
         <Stack direction='row' padding="10px 16px" spacing={2} bgcolor='#f9fbfd'>
           <Avatar
             alt="user"
@@ -41,12 +54,17 @@ const Sidebar = ({ active, activeMobile }) => {
               <ListItemIcon >
                 <Dashboard sx={{ color: '#2eacb3' }} />
               </ListItemIcon>
-              <ListItemText primary="Dashboard" />
+              <ListItemText primary={
+                <CustomStyled to="/">
+                  Dashboard
+                </CustomStyled>
+              } 
+              />
             </ListItemButton>
           </ListItem>
-          
+
           <Box display='flex' justifyContent='flex-start' m='12px 0' p='8px 0' bgcolor='#e9f4f6' >
-            <span style={{fontSize: '20px'}}>Projet</span>
+            <span style={{ fontSize: '20px' }}>Projet</span>
           </Box>
 
           <ListItem disablePadding>
@@ -63,12 +81,17 @@ const Sidebar = ({ active, activeMobile }) => {
               <ListItemIcon >
                 <NoteAdd sx={{ color: '#2eacb3' }} />
               </ListItemIcon>
-              <ListItemText primary="Ajouter un Projet" />
+              <ListItemText primary={
+                <CustomStyled to="/ajoutProjet">
+                  Ajouter un Projet
+                </CustomStyled>
+              } 
+              />
             </ListItemButton>
           </ListItem>
-          
+
           <Box display='flex' justifyContent='flex-start' m='12px 0' p='8px 0' bgcolor='#e9f4f6' >
-            <span style={{fontSize: '20px'}}>Taches</span>
+            <span style={{ fontSize: '20px' }}>Taches</span>
           </Box>
 
           <ListItem disablePadding>
@@ -85,7 +108,7 @@ const Sidebar = ({ active, activeMobile }) => {
               <ListItemIcon >
                 <PlaylistAdd sx={{ color: '#2eacb3' }} />
               </ListItemIcon>
-              <ListItemText primary="Ajouter une tache" />
+              <ListItemText primary="Ajouter une Tache" />
             </ListItemButton>
           </ListItem>
 

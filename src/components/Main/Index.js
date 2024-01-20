@@ -1,44 +1,31 @@
-import { ArrowBack, ArrowForward } from '@mui/icons-material'
-import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { Box, useMediaQuery } from '@mui/material'
+import React, { useState } from 'react'
+import Navbar from '../Navbar/Index'
+import Sidebar from '../Sidebar/Index'
+import { Outlet } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-
-const Main = ({ setActive, active }) => {
-
+const Main = () => {
   const media = useMediaQuery('(max-width:768px)');
- 
+  const activeState = useSelector((state) => state.systemeGPA.active);
+
   return (
-    <Box
-      sx={{
-        width: media ? '100%' : active ? '100%' : 'calc(100% - 250px)',
-        position: 'relative',
-        left: { xs: 0, sm: 0, md: active ? '0' : '250px' },
-        transition: 'width 0.3s ease-in-out, left 0.3s ease-in-out',
+    <Box>
+      <Navbar />
+      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
+        <Sidebar />
+        <Box
+          sx={{
+            width: media ? '100%' : activeState ? '100%' : 'calc(100% - 250px)',
+            position: 'relative',
+            left: { xs: 0, sm: 0, md: activeState ? '0' : '250px' },
+            transition: 'width 0.3s ease-in-out, left 0.3s ease-in-out',
+          }}
+        >
+          <Outlet />
+        </Box>
 
-      }}>
-      <Stack
-        direction='row'
-        alignItems='center'
-        sx={{ padding: { xs: '0 8px', sm: '0 30px', md: '0 25px' } }}
-      >
-        {
-          !active
-            ? <IconButton
-              onClick={() => setActive(!active)}
-              sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}
-            >
-              <ArrowBack sx={{ color: '#0d6efd' }} />
-            </IconButton>
-            : <IconButton
-              onClick={() => setActive(!active)}
-              sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}
-            >
-              <ArrowForward sx={{ color: '#0d6efd' }} />
-            </IconButton>
-        }
-        <Typography component='span' sx={{ fontSize: '23px' }}>Dashboard</Typography>
-      </Stack>
-
+      </Box>
     </Box>
   )
 }

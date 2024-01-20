@@ -1,12 +1,15 @@
 import { Box, Stack, ThemeProvider, createTheme } from '@mui/material';
-import Main from './components/Main/Index';
 import Navbar from './components/Navbar/Index';
 import Sidebar from './components/Sidebar/Index';
 import { useState } from 'react';
+import Dashboard from './components/Dashboard/Index';
+import Root from './components/Root';
+import { Provider } from 'react-redux';
+import store from './redux/store/store';
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 function App() {
-  const [active, setActive] = useState(false);
-  const [activeMobile, setActiveMobile] = useState(true);
   const [mode, setMode] = useState(false);
 
   const theme = createTheme({
@@ -26,15 +29,13 @@ function App() {
   });
 
   return (
-    <ThemeProvider theme={theme} >
-      <Box>
-        <Navbar activeMobile={activeMobile} setActiveMobile={setActiveMobile} />
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
-          <Sidebar activeMobile={activeMobile} active={active} />
-          <Main activeMobile={activeMobile} active={active} setActive={setActive} />
-        </Box>
-      </Box>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme} >
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Root />
+        </LocalizationProvider>
+      </ThemeProvider>
+    </Provider>
   );
 }
 

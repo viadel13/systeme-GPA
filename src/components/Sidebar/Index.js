@@ -63,7 +63,7 @@ const Sidebar = () => {
             </ListItemButton>
           </ListItem>
 
-          <Box display='flex' justifyContent='flex-start' m='12px 0' p='8px 0' bgcolor='#e9f4f6' >
+          <Box display='flex' justifyContent='flex-start' m='12px 0' p='8px 5px' bgcolor='#e9f4f6' >
             <span style={{ fontSize: '20px' }}>Projet</span>
           </Box>
 
@@ -72,7 +72,12 @@ const Sidebar = () => {
               <ListItemIcon >
                 <Source sx={{ color: '#2eacb3' }} />
               </ListItemIcon>
-              <ListItemText primary="Liste des Projets" />
+              <ListItemText primary={
+                <CustomStyled to="/ListeProjet">
+                  Liste des Projets
+                </CustomStyled>
+              } 
+               />
             </ListItemButton>
           </ListItem>
 
@@ -90,7 +95,7 @@ const Sidebar = () => {
             </ListItemButton>
           </ListItem>
 
-          <Box display='flex' justifyContent='flex-start' m='12px 0' p='8px 0' bgcolor='#e9f4f6' >
+          <Box display='flex' justifyContent='flex-start' m='12px 0' p='8px 5px' bgcolor='#e9f4f6' >
             <span style={{ fontSize: '20px' }}>Taches</span>
           </Box>
 

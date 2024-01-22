@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const Main = () => {
-  const media = useMediaQuery('(max-width:768px)');
+  const media = useMediaQuery('(max-width:959px)');
   const activeState = useSelector((state) => state.systemeGPA.active);
 
   return (

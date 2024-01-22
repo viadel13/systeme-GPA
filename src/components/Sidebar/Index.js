@@ -24,7 +24,6 @@ const Sidebar = () => {
         width: '250px',
         transition: 'width 0.3s ease-in-out, left 0.3s ease-in-out',
         overflowY: 'auto',
-
         height: 'calc(100% - 45px)',
         zIndex: 999
       }}

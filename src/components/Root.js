@@ -3,6 +3,7 @@ import Main from "./Main/Index";
 import Dashboard from "./Dashboard/Index";
 import AjoutProjet from "./Sidebar/AjoutProjet/Index";
 import ListeProjet from "./Sidebar/ListeProjet/Index";
+import ListeTache from "./Sidebar/ListeTache/Index";
 const Root = () => {
   return (
     <Router>
@@ -11,6 +12,7 @@ const Root = () => {
           <Route index path='/' element={<Dashboard />} />
           <Route path='/ajoutProjet' element={<AjoutProjet />} />
           <Route path='/ListeProjet' element={<ListeProjet />} />
+          <Route path='/listeTache' element={<ListeTache />} />
         </Route>
       </Routes>
     </Router>

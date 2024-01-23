@@ -14,7 +14,7 @@ const Sidebar = () => {
     color: '#555555',
     display: 'block',
     width: '100%',
-    
+
   })
   return (
     <Paper
@@ -57,7 +57,7 @@ const Sidebar = () => {
                 <CustomStyled to="/">
                   Dashboard
                 </CustomStyled>
-              } 
+              }
               />
             </ListItemButton>
           </ListItem>
@@ -75,8 +75,8 @@ const Sidebar = () => {
                 <CustomStyled to="/ListeProjet">
                   Liste des Projets
                 </CustomStyled>
-              } 
-               />
+              }
+              />
             </ListItemButton>
           </ListItem>
 
@@ -89,7 +89,7 @@ const Sidebar = () => {
                 <CustomStyled to="/ajoutProjet">
                   Ajouter un Projet
                 </CustomStyled>
-              } 
+              }
               />
             </ListItemButton>
           </ListItem>
@@ -103,7 +103,12 @@ const Sidebar = () => {
               <ListItemIcon >
                 <Assignment sx={{ color: '#2eacb3' }} />
               </ListItemIcon>
-              <ListItemText primary="Liste des Taches" />
+              <ListItemText primary={
+                <CustomStyled to="/listeTache">
+                  Liste des Taches
+                </CustomStyled>
+              }
+              />
             </ListItemButton>
           </ListItem>
 

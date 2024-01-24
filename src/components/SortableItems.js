@@ -22,7 +22,7 @@ export function SortableItems(props) {
           zIndex: 1
         }}
       >
-        <Paper elevation={0} sx={{ display: 'flex', border: '1px solid #f0f0f0', flexDirection: 'column', padding: '15px 15px', position: 'relative', zIndex: 1, height: '100%', width: '100%',           touchAction: 'none', }} gap={1}>
+        <Card elevation={0} sx={{ display: 'flex', border: '1px solid #f0f0f0', flexDirection: 'column', padding: '15px 15px', position: 'relative', zIndex: 1, height: '100%', width: '100%',           touchAction: 'none', }} gap={1}>
           <Typography
             variant='h6'
             position='absolute'
@@ -56,8 +56,8 @@ export function SortableItems(props) {
               props.items.filter(i => i.priorite === 'haut').map((i) => <Taches id={i.id} key={i.id} items={i} />)
             }
           </SortableContext>
-        </Paper>
-        <Paper elevation={0} sx={{ display: 'flex', border: '1px solid #f0f0f0', flexDirection: 'column', padding: '15px 15px', position: 'relative', zIndex: 1, height: '100%', width: '100%',           touchAction: 'none', }} gap={1}>
+        </Card>
+        <Card elevation={0} sx={{ display: 'flex', border: '1px solid #f0f0f0', flexDirection: 'column', padding: '15px 15px', position: 'relative', zIndex: 1, height: '100%', width: '100%',           touchAction: 'none', }} gap={1}>
           <Typography
             variant='h6'
             position='absolute'
@@ -90,8 +90,8 @@ export function SortableItems(props) {
               props.items.filter(i => i.priorite === 'moyen').map((i) => <Taches id={i.id} key={i.id} items={i} />)
             }
           </SortableContext>
-        </Paper>
-        <Paper elevation={0} sx={{ display: 'flex', border: '1px solid #f0f0f0', flexDirection: 'column', padding: '15px 15px', position: 'relative', zIndex: 1, height: '100%', width: '100%',           touchAction: 'none', }} gap={1}>
+        </Card>
+        <Card elevation={0} sx={{ display: 'flex', border: '1px solid #f0f0f0', flexDirection: 'column', padding: '15px 15px', position: 'relative', zIndex: 1, height: '100%', width: '100%',           touchAction: 'none', }} gap={1}>
           <Typography
             variant='h6'
             position='absolute'
@@ -124,7 +124,7 @@ export function SortableItems(props) {
               props.items.filter(i => i.priorite === 'bas').map((i) => <Taches id={i.id} key={i.id} items={i} />)
             }
           </SortableContext>
-        </Paper>
+        </Card>
       </Card>
     </div>
 

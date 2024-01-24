@@ -4,7 +4,7 @@ import React from 'react'
 
 const Login = () => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '100%', p: '0 12px', position: 'relative' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', minHeight: '100vh', width: '100%', p: '15px 12px', position: 'relative' }}>
   
       
       <Paper elevation={1} sx={{ borderColor: '#f0f0f0', p: '45px 35px', width: { xs: '350px', sm: '60%', md: '500px' } }}>

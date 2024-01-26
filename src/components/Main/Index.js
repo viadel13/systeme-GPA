@@ -1,15 +1,31 @@
 import { Box, useMediaQuery } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../Navbar/Index'
-import Sidebar from '../Sidebar/Index'
-import { Outlet } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import Sidebar from '../Sidebar/Index';
+import { Outlet } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { token } from '../../redux/reducers/rootReducer';
 
 const Main = () => {
   const media = useMediaQuery('(max-width:959px)');
   const activeState = useSelector((state) => state.systemeGPA.active);
+  const tokenView = useSelector((state) => state.systemeGPA.token);
+  const [showToken, setShowToken] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  return (
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      dispatch(token(storedToken));
+    }else{
+      navigate('/login');
+    }
+  }, [dispatch, navigate]);
+
+  const views = tokenView && (
     <Box>
       <Navbar />
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
@@ -27,7 +43,9 @@ const Main = () => {
 
       </Box>
     </Box>
-  )
+  );
+
+  return <> {views} </>
 }
 
 export default Main

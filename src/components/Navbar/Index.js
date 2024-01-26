@@ -4,12 +4,15 @@ import React, { useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
-import { activeMobile } from '../../redux/reducers/rootReducer';
-
+import { activeMobile, token } from '../../redux/reducers/rootReducer';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebaseConfig';
+import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
 
   const activeMb = useSelector((state) => state.systemeGPA.activeMobile);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -23,6 +26,14 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  async function handleSignOut() {
+    await signOut(auth);
+    handleClose();
+    localStorage.removeItem('token');
+    dispatch(token(''));
+    navigate('/login');
+}
 
   return (
     <>
@@ -67,7 +78,7 @@ const Navbar = () => {
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={handleSignOut}>Logout</MenuItem>
             </Menu>
           </Box>
         </Toolbar>

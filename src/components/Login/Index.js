@@ -27,13 +27,13 @@ const Login = () => {
         const response = await signInWithEmailAndPassword(auth, values.email, values.password);
 
         if (response) {
-          const response = await axios.post('http://127.0.0.1:5000/auth', values);
+          const response = await axios.post('https://api-systemegp.onrender.com/auth', values);
           console.log(response.data.customToken);
           dispatch(token(response.data.customToken));
 
           // Stockez le token dans localStorage
           localStorage.setItem('token', response.data.customToken);
-          
+
           navigate('/');
         }
 
@@ -59,7 +59,7 @@ const Login = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', minHeight: '100vh', width: '100%', p: '15px 12px', position: 'relative' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', width: '100%', p: '15px 12px', position: 'relative' }}>
       <Paper elevation={1} sx={{ borderColor: '#f0f0f0', p: '45px 35px', width: { xs: '350px', sm: '60%', md: '500px' } }}>
         <Box
           component="form"
@@ -99,8 +99,8 @@ const Login = () => {
           <Button type='submit' variant='contained' sx={{ backgroundColor: '#2eacb3', mt: 2 }} disableElevation fullWidth>Login</Button>
         </Box>
       </Paper>
-
     </Box>
+
   )
 }
 

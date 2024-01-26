@@ -1,13 +1,29 @@
 import { Avatar, Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, Typography, styled } from '@mui/material'
-import user from '../../assets/images/user.png'
+import userL from '../../assets/images/user.png'
 import { Assignment, Dashboard, NoteAdd, PlaylistAdd, Send, Source } from '@mui/icons-material'
 import { Link, NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../firebaseConfig'
+import { useEffect, useState } from 'react'
 
 const Sidebar = () => {
 
   const active = useSelector((state) => state.systemeGPA.active);
   const activeMobile = useSelector((state) => state.systemeGPA.activeMobile);
+  const[user, setUser] = useState('');
+
+  
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user.displayName);
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
+  }, [])
 
   const CustomStyled = styled(Link)({
     textDecoration: 'none',
@@ -32,12 +48,12 @@ const Sidebar = () => {
         <Stack direction='row' padding="10px 16px" spacing={2} bgcolor='#f9fbfd'>
           <Avatar
             alt="user"
-            src={user}
+            src={userL}
             sx={{ width: 55, height: 55, backgroundColor: '#e4ede7', padding: '5px' }}
           />
           <Box dispaly='flex' flexDirection='column'>
             <Typography component='p'>Bienvenue,</Typography>
-            <Typography component='p' fontWeight={600}>User</Typography>
+            <Typography component='p' fontWeight={600} sx={{textTransform: 'capitalize'}}>{user}</Typography>
           </Box>
         </Stack>
         <Divider />

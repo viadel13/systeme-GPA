@@ -1,6 +1,6 @@
 import { AccountTree, Notifications, Person } from '@mui/icons-material';
 import { AppBar, Badge, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,10 +14,10 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const xs = useMediaQuery('(max-width:600px)');
-
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,15 +33,15 @@ const Navbar = () => {
     localStorage.removeItem('token');
     dispatch(token(''));
     navigate('/login');
-}
+  }
 
   return (
     <>
-      <AppBar  elevation={0} position="sticky" sx={{ backgroundColor: '#f9fbfd', boxShadow: '0 1px 2px 0 rgba(0,0,0,0.1)', top: 0 }}>
+      <AppBar elevation={0} position="sticky" sx={{ backgroundColor: '#f9fbfd', boxShadow: '0 1px 2px 0 rgba(0,0,0,0.1)', top: 0 }}>
         <Toolbar disableGutters={xs ? true : false}>
           <IconButton
-           sx={{ display: { xs: 'flex', sm: 'flex', md: 'none' }}}
-           onClick={()=>dispatch(activeMobile(!activeMb))}
+            sx={{ display: { xs: 'flex', sm: 'flex', md: 'none' } }}
+            onClick={() => dispatch(activeMobile(!activeMb))}
           >
             <MenuIcon sx={{ fontSize: '25px' }} />
           </IconButton>

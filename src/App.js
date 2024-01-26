@@ -5,7 +5,8 @@ import { Provider } from 'react-redux';
 import store from './redux/store/store';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [mode, setMode] = useState(false);
@@ -32,6 +33,7 @@ function App() {
       <ThemeProvider theme={theme} >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Root />
+          <ToastContainer />
         </LocalizationProvider>
       </ThemeProvider>
     </Provider>

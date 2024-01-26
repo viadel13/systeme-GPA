@@ -6,15 +6,29 @@ import { Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { token } from '../../redux/reducers/rootReducer';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../firebaseConfig';
+import { uid } from '../../redux/reducers/rootReducer';
 
 const Main = () => {
   const media = useMediaQuery('(max-width:959px)');
   const activeState = useSelector((state) => state.systemeGPA.active);
   const tokenView = useSelector((state) => state.systemeGPA.token);
-  const [showToken, setShowToken] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user)
+        dispatch(uid(user.uid));
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
+  }, [dispatch])
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');

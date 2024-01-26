@@ -5,6 +5,7 @@ const initialState = {
     active: false,
     activeMobile: true,
     token: '',
+    uid: '',
 
 }
 
@@ -24,12 +25,16 @@ const systemeGPASlice = createSlice({
 
         token: (state, action) => {
            state.token = action.payload;
+        },
+
+        uid: (state, action) => {
+           state.uid = action.payload;
         }
 
     }
 })
 
-export const { active, activeMobile, token } =  systemeGPASlice.actions;
+export const { active, activeMobile, token, uid } =  systemeGPASlice.actions;
 
 
 export default  systemeGPASlice.reducer;

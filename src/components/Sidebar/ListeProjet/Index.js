@@ -4,6 +4,7 @@ import { active } from '../../../redux/reducers/rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
+import ModalEdit from './ModalEdit';
 
 const ListeProjet = () => {
 
@@ -14,16 +15,17 @@ const ListeProjet = () => {
   const [load, setLoad] = useState(true);
   const [openIndex, setOpenIndex] = useState(-1);
   const media = useMediaQuery('(max-width:600px)');
+  const[open, setOpen] = useState(false);
 
 
   useEffect(() => {
     fetchProjet(uid);
-  }, [uid, datas]);
+  }, [uid]);
 
 
   async function fetchProjet(param) {
     try {
-      const response = await axios.get(`https://api-systemegp.onrender.com/listProjet/${param}`);
+      const response = await axios.get(`http://127.0.0.1:5000/listProjet/${param}`);
       if (response && response.data && response.data.length === 0) {
         setDatas([]);
       } else if (response && response.data) {
@@ -102,16 +104,16 @@ const ListeProjet = () => {
                         >
                           <Delete sx={{ fontSize: '18px' }} />
                         </Button>
-                        <Button size='small' variant='outlined' sx={{ '&:hover': { borderColor: '#2eacb3' } }}>
+                        <Button onClick={()=>setOpen(true)} size='small' variant='outlined' sx={{ '&:hover': { borderColor: '#2eacb3' } }}>
                           <Edit sx={{ color: '#2eacb3', borderColor: '#2eacb3', fontSize: '18px' }} />
                         </Button>
                       </Stack>
-
 
                     </Box>
                   </Collapse>
                 </TableCell>
               </TableRow>
+              <ModalEdit open={open} setOpen={setOpen} />
             </Fragment>
           )
         })
@@ -119,49 +121,50 @@ const ListeProjet = () => {
       : <TableRow><TableCell colSpan={6}>Aucune donnees</TableCell></TableRow>
 
   return (
-    <Box sx={{ padding: { xs: '0 8px', sm: '0 30px', md: '0 25px' } }}>
-      <Stack
-        direction='row'
-        alignItems='center'
-        mt={1}
+    <>
+      <Box sx={{ padding: { xs: '0 8px', sm: '0 30px', md: '0 25px' } }}>
+        <Stack
+          direction='row'
+          alignItems='center'
+          mt={1}
 
-      >
-        {
-          !activeState
-            ? <IconButton
-              onClick={() => dispatch(active(!activeState))}
-              sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}
-            >
-              <ArrowBack sx={{ color: '#0d6efd' }} />
-            </IconButton>
-            : <IconButton
-              onClick={() => dispatch(active(!activeState))}
-              sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}
-            >
-              <ArrowForward sx={{ color: '#0d6efd' }} />
-            </IconButton>
-        }
-        <Typography component='span' sx={{ fontSize: '23px' }}>Liste des Projets</Typography>
-      </Stack>
-      <TableContainer component={Paper} elevation={0} sx={{ mt: 1 }}>
-        <Table aria-label="collapsible table">
-          <TableHead sx={{ backgroundColor: '#eeeeee' }}>
-            <TableRow>
-              <TableCell sx={{ width: '8%', display: { xs: 'none', sm: 'table-cell', md: 'table-cell' } }} />
-              <TableCell colSpan={media ? '4' : '0'} sx={{ width: { xs: '0%', sm: '20%' } }} >Projet</TableCell>
-              <TableCell style={{ width: '20%' }} sx={{ display: { xs: 'none', sm: 'table-cell', md: 'table-cell' } }} >Date</TableCell>
-              <TableCell style={{ width: '20%' }} sx={{ display: { xs: 'none', sm: 'table-cell', md: 'table-cell' } }} >Progres</TableCell>
-              <TableCell style={{ width: '15%' }} sx={{ display: { xs: 'none', sm: 'table-cell', md: 'table-cell' } }} >Priorite</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {viewTabs}
-          </TableBody>
+        >
+          {
+            !activeState
+              ? <IconButton
+                onClick={() => dispatch(active(!activeState))}
+                sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}
+              >
+                <ArrowBack sx={{ color: '#0d6efd' }} />
+              </IconButton>
+              : <IconButton
+                onClick={() => dispatch(active(!activeState))}
+                sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}
+              >
+                <ArrowForward sx={{ color: '#0d6efd' }} />
+              </IconButton>
+          }
+          <Typography component='span' sx={{ fontSize: '23px' }}>Liste des Projets</Typography>
+        </Stack>
+        <TableContainer component={Paper} elevation={0} sx={{ mt: 1 }}>
+          <Table aria-label="collapsible table">
+            <TableHead sx={{ backgroundColor: '#eeeeee' }}>
+              <TableRow>
+                <TableCell sx={{ width: '8%', display: { xs: 'none', sm: 'table-cell', md: 'table-cell' } }} />
+                <TableCell colSpan={media ? '4' : '0'} sx={{ width: { xs: '0%', sm: '20%' } }} >Projet</TableCell>
+                <TableCell style={{ width: '20%' }} sx={{ display: { xs: 'none', sm: 'table-cell', md: 'table-cell' } }} >Date</TableCell>
+                <TableCell style={{ width: '20%' }} sx={{ display: { xs: 'none', sm: 'table-cell', md: 'table-cell' } }} >Progres</TableCell>
+                <TableCell style={{ width: '15%' }} sx={{ display: { xs: 'none', sm: 'table-cell', md: 'table-cell' } }} >Priorite</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {viewTabs}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
 
-        </Table>
-      </TableContainer>
-
-    </Box>
+    </>
   )
 }
 

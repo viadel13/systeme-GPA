@@ -26,7 +26,7 @@ const AjoutProjet = () => {
     onSubmit: async (values) => {
 
       try {
-        const response = await axios.post('https://api-systemegp.onrender.com/addProjet', { values, uid });
+        const response = await axios.post('http://127.0.0.1:5000/addProjet', { values, uid });
         if (response) {
           formik.handleReset();
           toast.success("Projet cree avec success", {

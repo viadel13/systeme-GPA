@@ -27,7 +27,7 @@ const Login = () => {
         const response = await signInWithEmailAndPassword(auth, values.email, values.password);
 
         if (response) {
-          const response = await axios.post('https://api-systemegp.onrender.com/auth', values);
+          const response = await axios.post('http://127.0.0.1:5000/auth', values);
           console.log(response.data.customToken);
           dispatch(token(response.data.customToken));
 

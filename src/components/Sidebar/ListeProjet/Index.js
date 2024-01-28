@@ -1,48 +1,91 @@
 import { ArrowBack, ArrowForward, Delete, Edit, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
 import { Box, Button, Collapse, IconButton, LinearProgress, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery } from '@mui/material'
-import { active } from '../../../redux/reducers/rootReducer';
+import { active, datasDelete, datasEdit } from '../../../redux/reducers/rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { Fragment, useEffect, useState } from 'react';
-import axios from 'axios';
 import ModalEdit from './ModalEdit';
+import { db } from '../../../firebaseConfig';
+import { collection, getDocs, onSnapshot, query, where } from 'firebase/firestore';
+import ModalDelete from './ModalDelete';
 
 const ListeProjet = () => {
 
+
   const activeState = useSelector((state) => state.systemeGPA.active);
   const dispatch = useDispatch();
-  const uid = useSelector((state) => state.systemeGPA.uid);
-  const [datas, setDatas] = useState([]);
-  const [load, setLoad] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [openIndex, setOpenIndex] = useState(-1);
   const media = useMediaQuery('(max-width:600px)');
-  const[open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [donneesEnvoi, setDonneesEnvoi] = useState([]);
+  const uid = useSelector((state) => state.systemeGPA.uid);
 
+  const q = query(collection(db, "projets"), where('uid', '==', uid));
+  console.log(uid)
+  // useEffect(() => {
+  //   console.log('monte')
+  //   const fetchProjets = async () => {
+  //     try {
+  //       const q = query(collection(db, "projets"), where('uid', '==', 'uFh9mVHCfeKSeDxDXuohrPxosKIg2id'));
+  //       const querySnapshot = await getDocs(q);
+        
+  //       const projetsData = [];
+     
+  //       querySnapshot.forEach(doc => {
+  //         projetsData.push(doc.data());
+  //         console.log(doc.id, " => ", doc.data());
+
+  //       });
+        
+  //       setDonneesEnvoi(projetsData);
+  //     } catch (error) {
+  //       console.error('Erreur lors de la récupération des projets:', error);
+  //     }
+  //   };
+  
+  //   fetchProjets(); // Appel de la fonction pour récupérer les projets au chargement initial
+  
+  //   // Vous pouvez également ajouter un écouteur pour les modifications en temps réel ici si nécessaire
+  
+  //   return () => {
+ 
+  //   };
+  // }, [uid]);
 
   useEffect(() => {
-    fetchProjet(uid);
-  }, [uid]);
+    const unsubscribe = onSnapshot(q, (querySnapchot) => {
+      const datas = [];
+      querySnapchot.forEach((doc) => {
+        datas.push(doc.data());
+      });
 
-
-  async function fetchProjet(param) {
-    try {
-      const response = await axios.get(`http://127.0.0.1:5000/listProjet/${param}`);
-      if (response && response.data && response.data.length === 0) {
-        setDatas([]);
-      } else if (response && response.data) {
-        setDatas(response.data);
+      if (JSON.stringify(datas) !== JSON.stringify(donneesEnvoi)) {
+        setDonneesEnvoi(datas);
       }
-      setLoad(false); // Peu importe si les données sont vides ou non, définissez load à false après la requête.
-    } catch (error) {
-      console.error("Erreur lors de la récupération des données :", error);
-      setLoad(false); // Gérez les erreurs en passant load à false
-    }
+
+      setLoading(false);
+      return () => {
+        unsubscribe();
+      };
+    });
+  }, [q, donneesEnvoi]);
+
+  const handleOpen = (datas) => {
+    setOpen(true);
+    dispatch(datasEdit(datas));
+  };
+
+  const handleOpenDelete = (datas) => {
+    setOpenEdit(true);
+    dispatch(datasDelete(datas));
   }
 
-  const viewTabs = load
+  const viewTabs = loading
     ? <TableRow><TableCell colSpan={6}>Chargement</TableCell></TableRow>
-    : datas.length !== 0 ?
+    : donneesEnvoi.length !== 0 ?
       (
-        datas.map((i, index) => {
+        donneesEnvoi.map((i, index) => {
           const dateFromFirestore = new Date(i.date);
           const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
           const daysOfWeek = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
@@ -98,13 +141,14 @@ const ListeProjet = () => {
                           Action :
                         </Typography>
                         <Button
+                          onClick={() => handleOpenDelete(i)}
                           size='small'
                           variant='outlined'
                           sx={{ color: 'red', borderColor: 'red', '&:hover': { borderColor: 'red' } }}
                         >
                           <Delete sx={{ fontSize: '18px' }} />
                         </Button>
-                        <Button onClick={()=>setOpen(true)} size='small' variant='outlined' sx={{ '&:hover': { borderColor: '#2eacb3' } }}>
+                        <Button onClick={() => handleOpen(i)} size='small' variant='outlined' sx={{ '&:hover': { borderColor: '#2eacb3' } }}>
                           <Edit sx={{ color: '#2eacb3', borderColor: '#2eacb3', fontSize: '18px' }} />
                         </Button>
                       </Stack>
@@ -114,6 +158,7 @@ const ListeProjet = () => {
                 </TableCell>
               </TableRow>
               <ModalEdit open={open} setOpen={setOpen} />
+              <ModalDelete openEdit={openEdit} setOpenEdit={setOpenEdit} />
             </Fragment>
           )
         })

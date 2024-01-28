@@ -2,39 +2,49 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const initialState = {
-    active: false,
-    activeMobile: true,
-    token: '',
-    uid: '',
+   active: false,
+   activeMobile: true,
+   token: '',
+   uid: '',
+   datasEdit: [],
+   datasDelete: [],
 
 }
 
 const systemeGPASlice = createSlice({
-    name: 'systemeGPASlice',
-    initialState,
+   name: 'systemeGPASlice',
+   initialState,
 
-    reducers: {
+   reducers: {
 
-        active: (state, action) => {
-           state.active = action.payload;
-        },
+      active: (state, action) => {
+         state.active = action.payload;
+      },
 
-        activeMobile: (state, action) => {
-           state.activeMobile = action.payload;
-        },
+      activeMobile: (state, action) => {
+         state.activeMobile = action.payload;
+      },
 
-        token: (state, action) => {
-           state.token = action.payload;
-        },
+      token: (state, action) => {
+         state.token = action.payload;
+      },
 
-        uid: (state, action) => {
-           state.uid = action.payload;
-        }
+      uid: (state, action) => {
+         state.uid = action.payload;
+      },
 
-    }
+      datasEdit: (state, action) => {
+         state.datasEdit = action.payload;
+      },
+      
+      datasDelete: (state, action) => {
+         state.datasDelete = action.payload;
+      },
+
+   }
 })
 
-export const { active, activeMobile, token, uid } =  systemeGPASlice.actions;
+export const { active, activeMobile, token, uid, datasEdit, datasDelete } = systemeGPASlice.actions;
 
 
-export default  systemeGPASlice.reducer;
+export default systemeGPASlice.reducer;

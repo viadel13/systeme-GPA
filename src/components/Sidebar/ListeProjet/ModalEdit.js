@@ -4,9 +4,23 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { DateField, DatePicker, DesktopDatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const ModalEdit = ({ open, setOpen }) => {
+  
   const handleClose = () => setOpen(false);
+  const datasEdit = useSelector((state) => state.systemeGPA.datasEdit);
+  const uid = useSelector((state) => state.systemeGPA.uid);
+
+  useEffect(()=>{
+    formik.setValues({
+      projet: datasEdit?.projet || '',
+      date:  datasEdit ? dayjs(datasEdit.date) : dayjs('2022-04-17'),
+      priorite: datasEdit?.priorite || '',
+      description: datasEdit?.description || ''
+    });
+  }, [datasEdit])
 
   const style = {
     position: 'absolute',
@@ -15,67 +29,67 @@ const ModalEdit = ({ open, setOpen }) => {
     transform: 'translate(-50%, -50%)',
     width: {xs: '90%', sm: 400},
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '1px solid #000',
     boxShadow: 24,
     p: 4,
   };
 
   const formik = useFormik({
     initialValues: {
-      projet: "",
+      projet:  '' ,
       date: dayjs('2022-04-17'),
-      priorite: "",
-      description: "",
+      priorite: '' ,
+      description: ''  ,
     },
 
     onSubmit: async (values) => {
+      try {
+        const response = await axios.post('https://api-systemegp.onrender.com/editProjet', { values, uid, id: datasEdit.id});
+        if (response) {
+          formik.handleReset();
+          toast.success("Projet cree avec success", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          handleClose();
+        }
+      } catch (error) {
+        formik.handleReset();
+        if (navigator.onLine === false) {
+          // Pas de connexion Internet
 
-      // try {
-      //   const response = await axios.post('http://127.0.0.1:5000/addProjet', { values, uid });
-      //   if (response) {
-      //     formik.handleReset();
-      //     toast.success("Projet cree avec success", {
-      //       position: "top-right",
-      //       autoClose: 5000,
-      //       hideProgressBar: false,
-      //       closeOnClick: true,
-      //       pauseOnHover: true,
-      //       draggable: true,
-      //       progress: undefined,
-      //       theme: "light",
-      //     });
-      //   }
-      // } catch (error) {
-      //   formik.handleReset();
-      //   if (navigator.onLine === false) {
-      //     // Pas de connexion Internet
-
-      //     toast.error(
-      //       "Pas de connexion Internet. Veuillez vérifier votre connexion.",
-      //       {
-      //         position: "top-right",
-      //         autoClose: 5000,
-      //         hideProgressBar: false,
-      //         closeOnClick: true,
-      //         pauseOnHover: true,
-      //         draggable: true,
-      //         progress: undefined,
-      //         theme: "light",
-      //       }
-      //     );
-      //   } else {
-      //     toast.error("Une erreur s' est produite lors de la connexion", {
-      //       position: "top-right",
-      //       autoClose: 5000,
-      //       hideProgressBar: false,
-      //       closeOnClick: true,
-      //       pauseOnHover: true,
-      //       draggable: true,
-      //       progress: undefined,
-      //       theme: "light",
-      //     });
-      //   }
-      // }
+          toast.error(
+            "Pas de connexion Internet. Veuillez vérifier votre connexion.",
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
+        } else {
+          toast.error("Une erreur s' est produite lors de la connexion", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      }
 
     },
 
@@ -99,7 +113,7 @@ const ModalEdit = ({ open, setOpen }) => {
   })
 
   return (
-    <div>
+    <>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -187,27 +201,13 @@ const ModalEdit = ({ open, setOpen }) => {
                 {formik.touched.description && formik.errors.description && <FormHelperText sx={{ color: 'red' }}>{formik.errors.description}</FormHelperText>}
               </div>
               <Stack direction='row' alignSelf='flex-start' spacing={2}>
-                <Button type='submit' variant='contained' sx={{ textTransform: 'capitalize', }}>créer</Button>
-                <Button
-                  variant='outlined'
-                  onClick={() => formik.handleReset()}
-                  sx={{
-                    textTransform:
-                      'capitalize',
-                    borderColor: '#555555',
-                    color: '#555555',
-                    '&:hover': {
-                      backgroundColor: '#555555', color: 'white', borderColor: '#555555'
-                    }
-                  }}
-                >Annuler
-                </Button>
+                <Button type='submit' variant='contained' sx={{ textTransform: 'capitalize', }}>Modifier</Button>
               </Stack>
             </Box>
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </>
   )
 }
 

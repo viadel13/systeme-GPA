@@ -8,11 +8,13 @@ import { useState } from 'react';
 import { useFormik } from "formik";
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { v4 as uuidv4 } from "uuid";
 
 
 const AjoutProjet = () => {
   const activeState = useSelector((state) => state.systemeGPA.active);
   const dispatch = useDispatch();
+  const id = uuidv4().slice(0, 10);
   const uid = useSelector((state) => state.systemeGPA.uid);
 
   const formik = useFormik({
@@ -26,7 +28,7 @@ const AjoutProjet = () => {
     onSubmit: async (values) => {
 
       try {
-        const response = await axios.post('http://127.0.0.1:5000/addProjet', { values, uid });
+        const response = await axios.post('https://api-systemegp.onrender.com/addProjet', { values, uid, id });
         if (response) {
           formik.handleReset();
           toast.success("Projet cree avec success", {

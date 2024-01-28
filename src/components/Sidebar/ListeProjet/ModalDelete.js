@@ -10,7 +10,7 @@ const ModalDelete = ({openEdit, setOpenEdit}) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.get(`https://api-systemegp.onrender.com/${datasDelete.id}`)
+      const response = await axios.get(`https://api-systemegp.onrender.com/deleteProjet/${datasDelete.id}`)
       if (response) {
         toast.success("Supprimer avec success", {
           position: "top-right",
